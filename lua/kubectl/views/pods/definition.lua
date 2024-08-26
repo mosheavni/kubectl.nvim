@@ -9,6 +9,7 @@ local M = {
   url = { "{{BASE}}/api/v1/{{NAMESPACE}}pods?pretty=false" },
   hints = {
     { key = "<gl>", desc = "logs", long_desc = "Shows logs for all containers in pod" },
+    { key = "<g->", desc = "previous logs", long_desc = "Shows previous pod logs" },
     { key = "<gd>", desc = "describe", long_desc = "Describe selected pod" },
     { key = "<gu>", desc = "usage", long_desc = "Show resources used" },
     { key = "<enter>", desc = "containers", long_desc = "Opens container view" },

@@ -49,7 +49,22 @@ local function set_keymaps(bufnr)
       local name, ns = pod_view.getCurrentSelection()
       if name and ns then
         pod_view.selectPod(name, ns)
-        pod_view.Logs()
+        pod_view.Logs(false)
+      else
+        api.nvim_err_writeln("Failed to extract pod name or namespace.")
+      end
+    end,
+  })
+
+  api.nvim_buf_set_keymap(bufnr, "n", "g-", "", {
+    noremap = true,
+    silent = true,
+    desc = "View previous logs",
+    callback = function()
+      local name, ns = pod_view.getCurrentSelection()
+      if name and ns then
+        pod_view.selectPod(name, ns)
+        pod_view.Logs(true)
       else
         api.nvim_err_writeln("Failed to extract pod name or namespace.")
       end

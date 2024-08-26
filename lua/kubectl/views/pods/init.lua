@@ -77,12 +77,14 @@ function M.selectPod(pod_name, namespace)
   M.selection = { pod = pod_name, ns = namespace }
 end
 
-function M.Logs()
+function M.Logs(previous)
+  local url = "{{BASE}}/api/v1/namespaces/" .. M.selection.ns .. "/pods/" .. M.selection.pod .. "/log" .. "?pretty=true"
+  if previous then
+    url = url .. "&previous=true"
+  end
   ResourceBuilder:new("logs")
     :displayFloat("k8s_pod_logs", M.selection.pod, "less")
-    :setCmd({
-      "{{BASE}}/api/v1/namespaces/" .. M.selection.ns .. "/pods/" .. M.selection.pod .. "/log" .. "?pretty=true",
-    }, "curl", "text/html")
+    :setCmd({ url }, "curl", "text/html")
     :fetchAsync(function(self)
       self:splitData()
       vim.schedule(function()
