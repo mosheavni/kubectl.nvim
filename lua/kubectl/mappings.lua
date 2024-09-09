@@ -122,6 +122,14 @@ function M.register()
       if name then
         local ok = pcall(view.Desc, name, ns)
         if ok then
+          vim.api.nvim_buf_set_keymap(0, "n", "gr", "", {
+            noremap = true,
+            silent = true,
+            desc = "Refresh",
+            callback = function()
+              view.Desc(name, ns)
+            end,
+          })
           local state = require("kubectl.state")
           event_handler:on("DELETED", state.instance_float.buf_nr, function(event)
             if event.object.metadata.name == name then

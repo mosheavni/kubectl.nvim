@@ -19,7 +19,9 @@ local hl = require("kubectl.actions.highlight")
 
 local function getHl(percent)
   local symbol
-  if percent < 80 then
+  if percent < 50 then
+    symbol = ""
+  elseif percent < 80 then
     symbol = hl.symbols.note
   elseif percent < 90 then
     symbol = hl.symbols.warning
