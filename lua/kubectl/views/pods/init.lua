@@ -68,6 +68,7 @@ function M.TailLogs(pod, ns, container)
   if M.tail_handle and not M.tail_handle:is_closing() then
     vim.api.nvim_clear_autocmds({ group = group })
     stop_tailing(M.tail_handle)
+    M.tail_handle = nil
   else
     M.tail_handle = commands.shell_command_async("kubectl", args, nil, handle_output)
 
@@ -77,6 +78,7 @@ function M.TailLogs(pod, ns, container)
       buffer = buf,
       callback = function()
         stop_tailing(M.tail_handle)
+        M.tail_handle = nil
       end,
     })
   end
