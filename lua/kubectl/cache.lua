@@ -10,9 +10,11 @@ local current_time = os.time()
 
 M.LoadFallbackData = function(force)
   if M.loading then
+    print("is loading")
     return
   end
   if force then
+    print("force loading")
     M.cached_api_resources = { values = {}, shortNames = {} }
     M.load_cache(M.cached_api_resources)
     return
@@ -23,14 +25,16 @@ M.LoadFallbackData = function(force)
 
   local stat = vim.uv.fs_stat(path)
   local is_stale = not stat or (current_time - stat.mtime.sec >= ttl)
-  local cached = commands.read_file(path)
+  local cached = commands.read_file("api_resources/" .. ctx .. ".json")
   if not cached then
+    print("no cached data found")
     M.load_cache(M.cached_api_resources)
     return
   end
   M.cached_api_resources = cached
 
   if is_stale then
+    print("cached data is stale, reloading")
     M.load_cache(M.cached_api_resources)
     return
   end
