@@ -23,7 +23,7 @@ M.LoadFallbackData = function(force)
 
   local stat = vim.uv.fs_stat(path)
   local is_stale = not stat or (current_time - stat.mtime.sec >= ttl)
-  local cached = commands.read_file("api_resources/" .. ctx .. ".json")
+  local cached = commands.read_file(path)
   if not cached then
     M.load_cache(M.cached_api_resources)
     return
