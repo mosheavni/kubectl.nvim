@@ -35,7 +35,7 @@ M.LoadFallbackData = function(force)
     return
   end
 
-  M.timestamp = stat.mtime.sec
+  M.timestamp = stat and stat.mtime.sec
 end
 
 local function process_apis(resource, cached_api_resources)
@@ -67,12 +67,12 @@ function M.load_cache(cached_api_resources)
   M.loading = true
 
   local builder = manager.get_or_create("api_resources")
-  commands.run_async("get_api_resources_async", {}, function(data, err)
+  commands.run_async("get_api_resources_async", {}, function(result, err)
     if err then
       vim.print("error: failed loading api_resources", err)
       return
     end
-    builder.data = data
+    builder.data = result
     builder.decodeJson()
 
     for _, resource in ipairs(builder.data) do
