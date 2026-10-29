@@ -80,7 +80,9 @@ function M.init(callback)
         end)
       end
     else
-      splash.fail("Failed to load context")
+      splash.fail("Failed to load context", function()
+        require("kubectl.resources.contexts").View()
+      end)
       if callback then
         callback(false)
       end
@@ -229,7 +231,8 @@ function M.download_if_available(callback)
     return callback()
   end
 
-  -- See https://github.com/Saghen/blink.download for more info
+  -- See https://github.com/Saghen/blink.lib for more info (the module is still
+  -- named blink.download; only the repository was renamed)
   local root_dir = vim.fn.resolve(debug.getinfo(1).source:match("@?(.*/)") .. "../../")
 
   downloader.ensure_downloaded({
